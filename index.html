@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>雄安自驾游行程计划 — 5月23-24日</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d2e;
+    --card-hover: #222640;
+    --accent: #4a9eff;
+    --accent2: #f0a050;
+    --green: #26a69a;
+    --red: #ef5350;
+    --text: #e0e0e0;
+    --text2: #888;
+    --border: #2a2d3e;
+    --gold: #f0c040;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 24px 20px 24px;
+    background: linear-gradient(135deg, #1a1d2e 0%, #0f1117 50%, #1a1d2e 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero h1 {
+    font-size: 2.2em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .hero .subtitle {
+    color: var(--text2);
+    font-size: 1.1em;
+  }
+  .hero .badges {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+  }
+  .badge-car { background: rgba(74,158,255,0.15); color: var(--accent); }
+  .badge-time { background: rgba(240,160,80,0.15); color: var(--accent2); }
+  .badge-budget { background: rgba(38,166,154,0.15); color: var(--green); }
+
+  /* Container */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Section */
+  .section-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    margin: 40px 0 20px;
+    padding-left: 16px;
+    border-left: 3px solid var(--accent);
+    color: #fff;
+  }
+
+  /* Summary Cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .summary-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+  .summary-card .label {
+    font-size: 0.85em;
+    color: var(--text2);
+    margin-bottom: 4px;
+  }
+  .summary-card .value {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 24px;
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .timeline-item:hover {
+    background: var(--card-hover);
+    transform: translateX(2px);
+  }
+  .timeline-dot {
+    position: absolute;
+    left: -31px;
+    top: 24px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid;
+    background: var(--bg);
+    z-index: 1;
+  }
+  .dot-depart { border-color: var(--accent); }
+  .dot-drive { border-color: #888; }
+  .dot-hotel { border-color: var(--gold); }
+  .dot-eat { border-color: var(--accent2); }
+  .dot-play { border-color: var(--green); }
+  .dot-sight { border-color: #9c27b0; }
+
+  .timeline-time {
+    font-size: 0.95em;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .time-sat { color: var(--accent); }
+  .time-sun { color: var(--accent2); }
+  .timeline-title {
+    font-size: 1.15em;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .timeline-desc {
+    font-size: 0.9em;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .timeline-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .timeline-gallery {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    overflow-x: auto;
+  }
+  .timeline-gallery img {
+    width: 140px;
+    height: 95px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    transition: transform 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .timeline-gallery img:hover {
+    transform: scale(1.08);
+    border-color: var(--accent);
+  }
+  @media (max-width: 600px) {
+    .timeline-gallery img { width: 100px; height: 68px; }
+  }
+  .tag {
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 0.78em;
+    font-weight: 600;
+  }
+  .tag-parking { background: rgba(74,158,255,0.12); color: var(--accent); }
+  .tag-eat { background: rgba(240,160,80,0.12); color: var(--accent2); }
+  .tag-ticket { background: rgba(156,39,176,0.12); color: #ce93d8; }
+  .tag-tip { background: rgba(255,235,59,0.12); color: #ffd54f; }
+
+  /* Hotel Cards */
+  .hotel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .hotel-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .hotel-card:hover { background: var(--card-hover); }
+  .hotel-card.recommended { border-color: var(--gold); }
+  .hotel-card .rec-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    background: var(--gold);
+    color: #000;
+    border-radius: 10px;
+    font-size: 0.75em;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .hotel-name { font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .hotel-addr { font-size: 0.85em; color: var(--text2); margin-bottom: 8px; }
+  .hotel-info { display: flex; gap: 16px; font-size: 0.85em; flex-wrap: wrap; }
+  .hotel-info span { display: flex; align-items: center; gap: 4px; }
+  .price { color: var(--accent2); font-weight: 700; font-size: 1.05em; }
+
+  /* Attraction Cards */
+  .attraction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .attraction-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .attraction-card:hover { background: var(--card-hover); transform: translateY(-2px); }
+  .attraction-cover {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5em;
+    background: linear-gradient(135deg, #1a1d2e, #222640);
+  }
+  .attraction-body { padding: 16px 20px 20px; }
+  .attraction-name { font-size: 1.05em; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .attraction-desc { font-size: 0.85em; color: var(--text2); line-height: 1.5; }
+  .attraction-meta { display: flex; gap: 12px; margin-top: 10px; font-size: 0.8em; color: var(--text2); flex-wrap: wrap; }
+
+  /* Eat Cards */
+  .eat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .eat-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .eat-card:hover { background: var(--card-hover); }
+  .eat-name { font-size: 1.05em; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .eat-dish { font-size: 0.85em; color: var(--accent2); margin-bottom: 6px; }
+  .eat-addr { font-size: 0.82em; color: var(--text2); }
+
+  /* Route */
+  .route-section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 1px solid var(--border);
+    margin: 20px 0;
+  }
+  .route-title { font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 12px; }
+  .route-steps { list-style: none; }
+  .route-steps li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9em;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .route-steps li:last-child { border-bottom: none; }
+  .route-num {
+    min-width: 28px;
+    height: 28px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Cost */
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .cost-table th, .cost-table td {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.9em;
+    border-bottom: 1px solid var(--border);
+  }
+  .cost-table th {
+    background: rgba(74,158,255,0.08);
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .cost-table td { color: var(--text); }
+  .cost-table tr:last-child td { border-bottom: none; font-weight: 700; color: var(--accent2); font-size: 1em; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text2);
+    font-size: 0.85em;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  /* Map Section */
+  .map-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 20px;
+  }
+  .map-section {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .map-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .map-container {
+    height: 520px;
+    width: 100%;
+    background: #1a1d2e;
+  }
+  /* Dark map: invert + recolor OSM tiles */
+  .map-container .leaflet-tile-pane {
+    filter: grayscale(0.3) invert(1) hue-rotate(180deg) brightness(0.88) contrast(0.92);
+  }
+  /* Permanent labels under markers */
+  .poi-label-tooltip {
+    background: rgba(15,17,23,0.92) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 6px !important;
+    color: #e0e0e0 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 3px 8px !important;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif !important;
+  }
+  .poi-label-tooltip::before {
+    border-top-color: rgba(15,17,23,0.92) !important;
+  }
+  .map-legend {
+    display: flex;
+    gap: 20px;
+    padding: 12px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 0.82em;
+    color: var(--text2);
+    flex-wrap: wrap;
+  }
+  .map-legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .leaflet-popup-content {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 0.9em;
+  }
+  .leaflet-popup-content b {
+    color: #1a1d2e;
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.6em; }
+    .container { padding: 12px; }
+    .timeline { padding-left: 30px; }
+    .timeline-dot { left: -24px; width: 10px; height: 10px; }
+    .map-container { height: 350px; }
+    .map-wrapper { padding: 0 8px 12px; }
+  }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="badges" style="margin-top:0">
+    <span class="badge badge-car">自驾出行</span>
+    <span class="badge badge-time">2小时车程</span>
+    <span class="badge badge-budget">一日往返</span>
+  </div>
+</div>
+
+<!-- Map Section -->
+<div class="map-wrapper">
+<div class="map-section">
+  <div class="map-header">🗺️ 行程路线总览</div>
+  <div id="travel-map" class="map-container"></div>
+  <div class="map-legend">
+    <span><span class="legend-dot" style="background:#ef4444"></span> 出发/返回</span>
+    <span><span class="legend-dot" style="background:#10b981"></span> 景点游玩</span>
+    <span><span class="legend-dot" style="background:#f97316"></span> 美食餐饮</span>
+    <span><span class="legend-dot" style="background:#8b5cf6"></span> 人文打卡</span>
+    <span><span style="display:inline-block;width:24px;height:3px;background:#3b82f6"></span> 行驶路线</span>
+  </div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- Summary -->
+<div class="summary-grid">
+  <div class="summary-card">
+    <div class="label">出发</div>
+    <div class="value">周日 08:00</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">预计到家</div>
+    <div class="value">周日 17:45</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">游玩的</div>
+    <div class="value">白洋淀 + 雄安印象 + 之眼</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">总里程</div>
+    <div class="value">≈ 340km</div>
+  </div>
+</div>
+
+<!-- Route Plan -->
+<div class="section-title">自驾路线总览</div>
+<div class="route-section">
+  <div class="route-title">望都家园 ↔ 雄安新区（容城）· G4京港澳高速</div>
+  <ul class="route-steps">
+    <li><span class="route-num">1</span> 周日 08:00 从昌平北七家<b>望都家园</b>出发，走六环 → <b>G4京港澳高速</b>（约 170km，2h15min）</li>
+    <li><span class="route-num">2</span> 在 <b>容城/雄安新区出口</b> 下高速，直接前往白洋淀</li>
+    <li><span class="route-num">3</span> 白洋淀 → 午餐 → 雄安印象 → 雄安之眼，从容游玩</li>
+    <li><span class="route-num">4</span> 约 15:30 从雄安之眼出发，经 G4 返回望都家园，17:45 左右到家</li>
+  </ul>
+</div>
+
+<!-- Timeline -->
+<div class="section-title">行程时间轴 · 5月24日（周日）</div>
+<div class="timeline">
+
+  <div class="timeline-item">
+    <div class="timeline-dot dot-depart"></div>
+    <div class="timeline-time time-sun">08:00 出发</div>
+    <div class="timeline-title">望都家园 → 雄安新区（容城）</div>
+    <div class="timeline-desc">
+      从昌平北七家<b>望都家园</b>出发，走六环转 G4京港澳高速向南，全程约 170 公里，预计 2 小时 15 分钟。建议提前加满油、检查胎压。
+    </div>
+    <div class="timeline-tags">
+      <span class="tag tag-parking">导航：安新白洋淀停车场</span>
+      <span class="tag tag-tip">提前加油、带好防晒</span>
+    </div>
+    <div class="timeline-gallery">
+      <img src="https://inews.gtimg.com/om_bt/OwB7-jfM3r6qp-jvV8uDBFBIOtDEJQFCYUWJR2FxTncBsAA/641" alt="雄安航拍" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/O3OBifSNJZVyPN1Mfv2SUKE1QlmZpUg3PSx8DyXE1LrT4AA/641" alt="雄安建设" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/OPzJzv0Srs6T7XO83WBgAooyNvcHp4zBcH7os0LYCRIlwAA/641" alt="雄安新区" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/OYxhfabtsstSODKsVPoXb0SuqHo0Tu9iIzKTiXnOFsNTUAA/1000" alt="雄安道路" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/Osk0CmAUG26Rwige7ms49i6cz7A8tk8gJwZ9OrQPxeGfUAA/1000" alt="雄安高速" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/Oi2OYDrzkmd1dyKHAg0-f0z5b1YHHNkuweAGxC1TtKjJUAA/1000" alt="G4沿线" loading="lazy" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot dot-play"></div>
+    <div class="timeline-time time-sun">10:15 到达</div>
+    <div class="timeline-title">白洋淀风景区 — 乘船游览芦苇荡</div>
+    <div class="timeline-desc">
+      到达 <b>安新白洋淀停车场</b>（小型车 ¥20/次）。建议买"荷花大观园 + 游船"通票。初夏芦苇青青、碧波万顷，穿行芦苇荡约 1.5-2 小时。
+    </div>
+    <div class="timeline-tags">
+      <span class="tag tag-parking">安新白洋淀停车场 ¥20/次</span>
+      <span class="tag tag-ticket">门票+船票 ≈ ¥100-150</span>
+      <span class="tag tag-tip">5A景区，建议提前网上购票</span>
+    </div>
+    <div class="timeline-gallery">
+      <img src="./img/byd_1.webp" alt="白洋淀实拍" loading="lazy">
+      <img src="./img/byd_2.webp" alt="白洋淀实拍" loading="lazy">
+      <img src="./img/byd_3.webp" alt="白洋淀实拍" loading="lazy">
+      <img src="./img/byd_4.webp" alt="白洋淀实拍" loading="lazy">
+      <img src="./img/byd_5.webp" alt="白洋淀实拍" loading="lazy">
+      <img src="./img/byd_6.webp" alt="白洋淀实拍" loading="lazy">
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot dot-eat"></div>
+    <div class="timeline-time time-sun">12:15 午餐</div>
+    <div class="timeline-title">雄安味道（推荐）· 奥威路97号</div>
+    <div class="timeline-desc">
+      从白洋淀返回容城约 25 分钟。奥威路97号，主营京鲁川湘粤及本地特色菜。备选：<b>会友春饭店</b>（白洋淀炖杂鱼）、<b>聚湘食餐厅</b>（奥威路91号，湘菜）。
+    </div>
+    <div class="timeline-tags">
+      <span class="tag tag-eat">人均 ¥80-120</span>
+      <span class="tag tag-parking">路边有停车位</span>
+    </div>
+    <div class="timeline-gallery">
+      <img src="./img/food_1.webp" alt="雄安美食实拍" loading="lazy">
+      <img src="./img/food_2.webp" alt="雄安美食实拍" loading="lazy">
+      <img src="./img/food_3.webp" alt="雄安美食实拍" loading="lazy">
+      <img src="./img/food_4.webp" alt="雄安美食实拍" loading="lazy">
+      <img src="https://inews.gtimg.com/om_bt/OLj8cDlKlgEtUlXrQLt2ZETHJwIYALAWb0hJ4NhPBASqQAA/641" alt="容城街景" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/O3mxX0BMKM-5BoWkA1e2c2jUyXvtax37zdXkxRLBzwL7cAA/641" alt="容城风貌" loading="lazy" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot dot-sight"></div>
+    <div class="timeline-time time-sun">13:30 参观</div>
+    <div class="timeline-title">雄安印象展览馆</div>
+    <div class="timeline-desc">
+      容城县容东金湖东路76号，距餐厅约10分钟。以<b>光影科技</b>展现雄安城市变迁，水墨丹青与灯光艺术结合，拍照圣地，游览约 1 小时。
+    </div>
+    <div class="timeline-tags">
+      <span class="tag tag-parking">展馆自带停车场</span>
+      <span class="tag tag-ticket">免费参观</span>
+      <span class="tag tag-tip">拍照出片</span>
+    </div>
+    <div class="timeline-gallery">
+      <img src="./img/yx_1.webp" alt="雄安印象实拍" loading="lazy">
+      <img src="./img/yx_2.webp" alt="雄安印象实拍" loading="lazy">
+      <img src="./img/yx_3.webp" alt="雄安印象实拍" loading="lazy">
+      <img src="./img/yx_4.webp" alt="雄安印象实拍" loading="lazy">
+      <img src="./img/yx_5.webp" alt="雄安印象实拍" loading="lazy">
+      <img src="./img/yx_6.webp" alt="雄安印象实拍" loading="lazy">
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot dot-sight"></div>
+    <div class="timeline-time time-sun">14:30 打卡</div>
+    <div class="timeline-title">雄安之眼（城市计算中心）</div>
+    <div class="timeline-desc">
+      雄安地标建筑，拱形结构倒映水面如"智慧之眼"。在此拍一张打卡照，然后从容返程。
+    </div>
+    <div class="timeline-tags">
+      <span class="tag tag-parking">周边公共停车位</span>
+      <span class="tag tag-tip">免费外观打卡</span>
+    </div>
+    <div class="timeline-gallery">
+      <img src="./img/eye_1.webp" alt="雄安之眼实拍" loading="lazy">
+      <img src="./img/eye_2.webp" alt="雄安之眼实拍" loading="lazy">
+      <img src="https://cds.chinadaily.com.cn/dams/capital/image/202305/17/646475cde4b0736d76f63c36_m.webp" alt="雄安之眼" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://cds.chinadaily.com.cn/dams/capital/image/202305/17/646475cee4b0736d76f63c38_m.webp" alt="雄安之眼夜景" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://cds.chinadaily.com.cn/dams/capital/image/202305/17/646475cee4b0736d76f63c3a_m.webp" alt="城市计算中心" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/O0-wfnAZMC4MRSgzhn5dwY5k9csKJzeV1OOa_LSupAXXQAA/641" alt="雄安地标" loading="lazy" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot dot-depart"></div>
+    <div class="timeline-time time-sun">15:00 返程</div>
+    <div class="timeline-title">雄安 → 望都家园（G4京港澳高速）</div>
+    <div class="timeline-desc">
+      从容城上 G4高速向北，约 170km，预计 2 小时 15 分钟。<b>预计 17:15-17:45 到家</b>，不赶不急，到家还有时间休息。
+    </div>
+    <div class="timeline-tags">
+      <span class="tag tag-tip">从容驾驶，一天刚刚好</span>
+    </div>
+    <div class="timeline-gallery">
+      <img src="https://inews.gtimg.com/om_bt/OPfPepHV1K3N08ljt5whxNnwkqs8os8vTxdSTyOHUmWxsAA/641" alt="返程风光" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/OrBke1zyex1MnZxrPZpY8RLRIndXj0Y5hGdZPKnD_POV4AA/1000" alt="G4返程" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/Ow_iV8VB14R2pNvyCpK9WZAR7qyAkxHlAAlfZShpxQvPkAA/1000" alt="雄安黄昏" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/OMUKM2WoEado1tnmjs47EMrGPZT6TXaYBHVjS8GtU1gaAAA/1000" alt="高速沿线" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/Ov3kUuU68CA49UCcVreyOp8p5_x0K1w-wRn-glCa3FUpIAA/1000" alt="归途" loading="lazy" onerror="this.style.display='none'">
+      <img src="https://inews.gtimg.com/om_bt/Owr3knWYc-Yd-OK52PRvIkjkO_XaLEyznEDwjF9HYmscsAA/1000" alt="北京方向" loading="lazy" onerror="this.style.display='none'">
+    </div>
+  </div>
+</div>
+
+<!-- Attractions -->
+<div class="section-title">必去景点一览</div>
+<div class="attraction-grid">
+  <div class="attraction-card">
+    <div class="attraction-cover">🏞️</div>
+    <div class="attraction-body">
+      <div class="attraction-name">白洋淀风景区</div>
+      <div class="attraction-desc">5A级景区，"华北明珠"。乘船穿行芦苇荡，赏荷花，品水乡风情。初夏最佳游览季节。</div>
+      <div class="attraction-meta">
+        <span>安新县旅游西路</span>
+        <span>停车 ¥20/次</span>
+      </div>
+    </div>
+  </div>
+  <div class="attraction-card">
+    <div class="attraction-cover">🏛️</div>
+    <div class="attraction-body">
+      <div class="attraction-name">雄安印象展览馆</div>
+      <div class="attraction-desc">光影科技+水墨丹青，沉浸式感受雄安从"一张白纸"到"未来之城"的变迁，拍照圣地。</div>
+      <div class="attraction-meta">
+        <span>容城县容东金湖东路76号</span>
+        <span>免费</span>
+      </div>
+    </div>
+  </div>
+  <div class="attraction-card">
+    <div class="attraction-cover">👁️</div>
+    <div class="attraction-body">
+      <div class="attraction-name">雄安城市计算中心</div>
+      <div class="attraction-desc">"雄安之眼"地标建筑，拱形结构倒映水面，夜晚灯光璀璨，最佳拍照打卡点。</div>
+      <div class="attraction-meta">
+        <span>容城县 · 启动区</span>
+        <span>免费外观打卡</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Food Recommendations -->
+<div class="section-title">美食推荐</div>
+<div class="eat-grid">
+  <div class="eat-card">
+    <div class="eat-name">雄安味道</div>
+    <div class="eat-dish">京鲁川湘粤 + 本地特色菜</div>
+    <div class="eat-addr">奥威路97号 · 人均 ¥80-120</div>
+  </div>
+  <div class="eat-card">
+    <div class="eat-name">会友春饭店</div>
+    <div class="eat-dish">白洋淀炖杂鱼 · 荷叶系列菜</div>
+    <div class="eat-addr">容城县 · 人均 ¥60-100</div>
+  </div>
+  <div class="eat-card">
+    <div class="eat-name">圈头淀边渔家</div>
+    <div class="eat-dish">野生炖杂鱼 · 小河虾 · 荷叶尖炒蛋</div>
+    <div class="eat-addr">白洋淀大道191-193号 · 人均 ¥60-80</div>
+  </div>
+  <div class="eat-card">
+    <div class="eat-name">聚湘食餐厅</div>
+    <div class="eat-dish">正宗湘菜系列</div>
+    <div class="eat-addr">奥威路91号 · 人均 ¥60-90</div>
+  </div>
+</div>
+
+<!-- Cost -->
+<div class="section-title">费用预估</div>
+<table class="cost-table">
+  <thead>
+    <tr><th>项目</th><th>明细</th><th>费用</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>油费</td><td>往返约340km，按0.7元/km</td><td>≈ ¥240</td></tr>
+    <tr><td>高速费</td><td>G4京港澳往返</td><td>≈ ¥140</td></tr>
+    <tr><td>白洋淀</td><td>门票+游船</td><td>≈ ¥150</td></tr>
+    <tr><td>停车费</td><td>白洋淀 ¥20</td><td>≈ ¥20</td></tr>
+    <tr><td>餐饮</td><td>午餐</td><td>≈ ¥100</td></tr>
+    <tr><td>合计</td><td>一日游不超 ¥700</td><td>≈ ¥650</td></tr>
+  </tbody>
+</table>
+
+<!-- Tips -->
+<div class="section-title">出行小贴士</div>
+<div class="route-section">
+  <ul class="route-steps">
+    <li><span class="route-num" style="background:var(--accent2)">💡</span> <b>早出发不堵</b>：周日早上8点出发，六环和G4都很通畅，10点出头就能到白洋淀。</li>
+    <li><span class="route-num" style="background:var(--accent2)">💡</span> <b>白洋淀门票</b>：可在携程/美团提前购票，通常比现场便宜 10-20 元。</li>
+    <li><span class="route-num" style="background:var(--accent2)">💡</span> <b>防晒防蚊</b>：5月水边蚊虫较多，建议携带驱蚊液；户外活动注意防晒。</li>
+    <li><span class="route-num" style="background:var(--accent2)">💡</span> <b>舒适着装</b>：乘船和逛展馆建议穿运动鞋或平底鞋。</li>
+    <li><span class="route-num" style="background:var(--accent2)">💡</span> <b>返程时间</b>：15:00 出发，走 G4 一路畅通，周日午后车少，17:30 前到家。</li>
+    <li><span class="route-num" style="background:var(--accent2)">💡</span> <b>加油提醒</b>：出发前在望都家园附近加满油，雄安沿线加油站较少。</li>
+  </ul>
+</div>
+
+</div>
+
+<div class="footer">
+  雄安一日自驾游 · 5月24日 · 望都家园出发<br>
+  <span style="font-size:0.8em;color:#555">数据来源：腾讯新闻、携程、华住会、游了 tour | 更新时间：2026年5月22日</span>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function() {
+  // ---- OSM standard tiles (most reliable) + CSS dark filter ----
+  var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 19
+  });
+
+  var map = L.map('travel-map', {
+    center: [39.08, 116.0],
+    zoom: 10,
+    layers: [tiles],
+    zoomControl: false
+  });
+
+  // Move zoom control to bottom-right
+  L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+  // ---- POIs (1-day trip, 5 stops) ----
+  var pois = [
+    { num:1, lat:40.115, lng:116.430, cat:'depart', label:'望都家园',   time:'周日 08:00',   detail:'昌平北七家出发 · G4京港澳高速' },
+    { num:2, lat:38.932, lng:115.942, cat:'play',   label:'白洋淀景区', time:'周日 10:15',   detail:'乘船游芦苇荡 · 5A 景区 · 停车 ¥20' },
+    { num:3, lat:39.052, lng:115.858, cat:'eat',    label:'雄安味道',   time:'周日 12:15',   detail:'午餐 · 京鲁川湘粤本地菜' },
+    { num:4, lat:39.048, lng:115.908, cat:'sight',  label:'雄安印象',   time:'周日 13:30',   detail:'光影展览 · 城市变迁 · 免费' },
+    { num:5, lat:39.042, lng:115.912, cat:'sight',  label:'雄安之眼',   time:'周日 14:30',   detail:'地标打卡 · 随后返程' }
+  ];
+
+  // Category → color mapping
+  var catColors = {
+    depart: '#ef4444',
+    eat:    '#f97316',
+    play:   '#10b981',
+    sight:  '#8b5cf6'
+  };
+
+  var catLabels = {
+    depart: '起终点',
+    eat:    '美食',
+    play:   '游玩',
+    sight:  '打卡'
+  };
+
+  // Build numbered marker icons (one per POI)
+  pois.forEach(function(p, i) {
+    var bg = catColors[p.cat];
+    var isDepart = (p.num === 1 || p.num === 5);
+    var size = isDepart ? 30 : 24;
+    var fontSize = isDepart ? 14 : 12;
+    var borderW = isDepart ? 3 : 2;
+    var shadow = isDepart
+      ? '0 0 14px ' + bg + ', 0 3px 10px rgba(0,0,0,0.4)'
+      : '0 2px 6px rgba(0,0,0,0.5)';
+
+    var icon = L.divIcon({
+      className: 'poi-marker',
+      html:
+        '<div style="' +
+          'width:' + size + 'px;height:' + size + 'px;' +
+          'border-radius:50%;' +
+          'background:' + bg + ';' +
+          'border:' + borderW + 'px solid rgba(255,255,255,0.95);' +
+          'box-shadow:' + shadow + ';' +
+          'display:flex;align-items:center;justify-content:center;' +
+          'font-size:' + fontSize + 'px;font-weight:800;color:#fff;' +
+          'font-family:-apple-system,BlinkMacSystemFont,sans-serif;' +
+          'text-shadow:0 1px 2px rgba(0,0,0,0.3);' +
+        '">' + p.num + '</div>',
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2],
+      popupAnchor: [0, -(size/2 + 4)]
+    });
+
+    var marker = L.marker([p.lat, p.lng], { icon: icon, zIndexOffset: 1000 - i }).addTo(map);
+
+    // Rich popup
+    marker.bindPopup(
+      '<div style="min-width:160px">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">' +
+          '<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:' + bg + ';color:#fff;font-size:12px;font-weight:800">' + p.num + '</span>' +
+          '<b style="font-size:1.05em">' + p.label + '</b>' +
+        '</div>' +
+        '<div style="font-size:0.85em;color:#555;margin-bottom:3px">⏰ ' + p.time + '</div>' +
+        '<div style="font-size:0.82em;color:#777">' + p.detail + '</div>' +
+        '<div style="margin-top:6px"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72em;background:' + bg + '20;color:' + bg + ';font-weight:700">' + catLabels[p.cat] + '</span></div>' +
+      '</div>'
+    );
+
+    // Permanent label under marker (name + time)
+    var labelText = isDepart ? p.label : (p.label + ' · ' + p.time);
+    var labelDir = isDepart ? 'top' : 'bottom';
+    var labelOff = isDepart ? [0, -(size/2 + 4)] : [0, size/2 + 1];
+    marker.bindTooltip(labelText, {
+      permanent: true,
+      direction: labelDir,
+      offset: labelOff,
+      className: 'poi-label-tooltip'
+    });
+  });
+
+
+  // ---- Real driving route: query OSRM per segment (more reliable) ----
+  var routeCoords = [
+    [40.115, 116.430], // 望都家园
+    [38.932, 115.942], // 白洋淀
+    [39.052, 115.858], // 雄安味道
+    [39.048, 115.908], // 雄安印象
+    [39.042, 115.912], // 雄安之眼
+    [40.115, 116.430]  // 回望都家园
+  ];
+
+  // Build per-segment queries
+  var segQueries = [];
+  for (var i = 0; i < routeCoords.length - 1; i++) {
+    var a = routeCoords[i], b = routeCoords[i + 1];
+    segQueries.push(
+      'https://router.project-osrm.org/route/v1/driving/' +
+      a[1] + ',' + a[0] + ';' + b[1] + ',' + b[0] +
+      '?geometries=geojson&overview=full&steps=false'
+    );
+  }
+
+  Promise.all(segQueries.map(function(url) {
+    return fetch(url).then(function(r) { return r.json(); });
+  })).then(function(results) {
+    var allCoords = [];
+    var realLabels = [];
+    for (var i = 0; i < results.length; i++) {
+      var r = results[i];
+      if (r.routes && r.routes.length > 0) {
+        var geom = r.routes[0].geometry.coordinates;
+        for (var j = 0; j < geom.length; j++) {
+          // avoid duplicate connection points
+          if (j === 0 && allCoords.length > 0) continue;
+          allCoords.push([geom[j][1], geom[j][0]]);
+        }
+        var leg = r.routes[0].legs[0];
+        var min = Math.round(leg.duration / 60);
+        var km = Math.round(leg.distance / 1000);
+        realLabels.push('🚗 ' + min + 'min · ' + km + 'km');
+      } else {
+        // Segment failed, use straight line
+        allCoords.push(routeCoords[i]);
+        allCoords.push(routeCoords[i + 1]);
+        realLabels.push(segments[i].label);
+      }
+    }
+    // Draw assembled real route
+    L.polyline(allCoords, {
+      color: '#3b82f6', weight: 4, opacity: 0.88, dashArray: '12, 6'
+    }).addTo(map);
+    L.polyline(allCoords, {
+      color: '#3b82f6', weight: 3, opacity: 0.55, dashArray: '1, 20', lineCap: 'butt'
+    }).addTo(map);
+    // Update labels
+    for (var k = 0; k < Math.min(realLabels.length, segments.length); k++) {
+      segments[k].label = realLabels[k];
+    }
+    drawSegLabels();
+  }).catch(function() {
+    drawFallbackRoute();
+  });
+
+  function drawFallbackRoute() {
+    L.polyline(routeCoords, {
+      color: '#3b82f6', weight: 3.5, opacity: 0.85, dashArray: '10, 6'
+    }).addTo(map);
+    L.polyline(routeCoords, {
+      color: '#3b82f6', weight: 2.5, opacity: 0.6, dashArray: '1, 18', lineCap: 'butt'
+    }).addTo(map);
+    drawSegLabels();
+  }
+
+  // ---- Segment labels (shown after OSRM response) ----
+  var segments = [
+    { from:[40.115,116.430], to:[38.932,115.942], mid:[39.52,116.19], label:'🚗 2h15min · 170km' },
+    { from:[38.932,115.942], to:[39.052,115.858], mid:[38.992,115.90], label:'🚗 25min · 25km' },
+    { from:[39.052,115.858], to:[39.048,115.908], mid:[39.050,115.88], label:'🚗 10min · 6km' },
+    { from:[39.048,115.908], to:[39.042,115.912], mid:[39.045,115.91], label:'🚗 5min · 3km' },
+    { from:[39.042,115.912], to:[40.115,116.430], mid:[39.58,116.17], label:'🚗 2h15min · 170km' }
+  ];
+
+  function drawSegLabels() {
+    segments.forEach(function(seg) {
+      L.marker(seg.mid, {
+        icon: L.divIcon({
+          className: '',
+          html: '<div style="' +
+            'background:rgba(26,29,46,0.9);color:#ddd;' +
+            'padding:3px 10px;border-radius:10px;' +
+            'font-size:10.5px;font-weight:600;white-space:nowrap;' +
+            'border:1px solid rgba(255,255,255,0.15);' +
+            'box-shadow:0 1px 6px rgba(0,0,0,0.35)' +
+          '">' + seg.label + '</div>',
+          iconSize: [0,0], iconAnchor: [-45, 9]
+        }), interactive: false
+      }).addTo(map);
+    });
+  }
+
+  // ---- Fit bounds ----
+  map.fitBounds(pois.map(function(p) { return [p.lat, p.lng]; }), { padding: [50, 50] });
+})();
+</script>
+
+</body>
+</html>
